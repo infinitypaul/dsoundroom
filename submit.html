@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Submit your music to be featured on The Soundroom with Infinity Paul. We're looking for authentic artists across all genres.">
+  
+  <title>Submit / Be Featured | The Soundroom with Infinity Paul</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Page Loader -->
+  <div class="loader" id="loader">
+    <img src="assets/logo-white.svg" alt="" class="loader__logo">
+  </div>
+
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container">
+      <div class="header__inner">
+        <a href="index.html" class="header__logo">
+          <img src="assets/logo-white.svg" alt="The Soundroom with Infinity Paul">
+        </a>
+        
+        <nav class="nav">
+          <a href="index.html" class="nav__link">Home</a>
+          <a href="sessions.html" class="nav__link">Sessions</a>
+          <a href="about.html" class="nav__link">About</a>
+          <a href="submit.html" class="nav__link nav__link--active">Submit</a>
+          <a href="contact.html" class="nav__link">Contact</a>
+        </nav>
+        
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation -->
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="index.html" class="mobile-nav__link">Home</a>
+    <a href="sessions.html" class="mobile-nav__link">Sessions</a>
+    <a href="about.html" class="mobile-nav__link">About</a>
+    <a href="submit.html" class="mobile-nav__link">Submit</a>
+    <a href="contact.html" class="mobile-nav__link">Contact</a>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="page-content">
+    <!-- Submit Hero -->
+    <section class="submit-hero">
+      <div class="container">
+        <div class="submit-hero__content reveal">
+          <span class="section__eyebrow">Be Featured</span>
+          <h1 class="submit-hero__title">Share your sound</h1>
+          <p class="submit-hero__text">
+            The Soundroom is always listening. If you're an artist with something 
+            genuine to say—regardless of genre—we'd love to hear from you.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Submit Form -->
+    <section class="submit-form-section section--dark">
+      <div class="container">
+        <div class="reveal">
+          <div class="form-note mb-xl" style="max-width: 700px;">
+            <strong>How it works:</strong> Sessions are curated by invitation and submission. 
+            We prioritize artistic intention over follower counts, and authenticity over polish. 
+            If your submission resonates, we'll reach out to discuss next steps.
+          </div>
+        </div>
+
+        <form class="form reveal" id="submitForm">
+          <!-- Name -->
+          <div class="form-group">
+            <label for="name" class="form-label">Artist / Stage Name *</label>
+            <input type="text" id="name" name="name" class="form-input" required placeholder="Your name or stage name">
+          </div>
+
+          <!-- Email -->
+          <div class="form-group">
+            <label for="email" class="form-label">Email Address *</label>
+            <input type="email" id="email" name="email" class="form-input" required placeholder="your@email.com">
+          </div>
+
+          <!-- Phone (Optional) -->
+          <div class="form-group">
+            <label for="phone" class="form-label">Phone / WhatsApp (Optional)</label>
+            <input type="tel" id="phone" name="phone" class="form-input" placeholder="+234 xxx xxx xxxx">
+          </div>
+
+          <!-- Location -->
+          <div class="form-group">
+            <label for="location" class="form-label">Location *</label>
+            <input type="text" id="location" name="location" class="form-input" required placeholder="City, Country">
+          </div>
+
+          <!-- Genre / Vibe -->
+          <div class="form-group">
+            <label for="genre" class="form-label">Genre / Vibe *</label>
+            <select id="genre" name="genre" class="form-select" required>
+              <option value="" disabled selected>Select your primary genre</option>
+              <option value="worship">Worship</option>
+              <option value="afro-soul">Afro-soul</option>
+              <option value="soul">Soul / R&B</option>
+              <option value="acoustic">Acoustic</option>
+              <option value="spoken-word">Spoken Word / Poetry</option>
+              <option value="alternative">Alternative</option>
+              <option value="jazz">Jazz</option>
+              <option value="folk">Folk</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <!-- Music Links -->
+          <div class="form-group">
+            <label for="music-links" class="form-label">Links to Your Music *</label>
+            <textarea id="music-links" name="music-links" class="form-textarea" required 
+              placeholder="Share links to your music (YouTube, Spotify, Audiomack, SoundCloud, etc.)"></textarea>
+          </div>
+
+          <!-- Social Links -->
+          <div class="form-group">
+            <label for="social-links" class="form-label">Social Media Links</label>
+            <textarea id="social-links" name="social-links" class="form-textarea" 
+              placeholder="Instagram, Twitter/X, TikTok, etc."></textarea>
+          </div>
+
+          <!-- Intent -->
+          <div class="form-group">
+            <label for="intent" class="form-label">Your Intent / What This Session Would Mean *</label>
+            <textarea id="intent" name="intent" class="form-textarea" required 
+              placeholder="Tell us about yourself and your music. What would a Soundroom session mean to you? What story do you want to tell?"></textarea>
+          </div>
+
+          <!-- Song Choice -->
+          <div class="form-group">
+            <label for="song" class="form-label">What Song Would You Perform?</label>
+            <textarea id="song" name="song" class="form-textarea" 
+              placeholder="If selected, what song(s) would you want to perform in the room? Original or cover?"></textarea>
+          </div>
+
+          <!-- How Did You Hear -->
+          <div class="form-group">
+            <label for="source" class="form-label">How Did You Hear About The Soundroom?</label>
+            <select id="source" name="source" class="form-select">
+              <option value="" disabled selected>Select an option</option>
+              <option value="youtube">YouTube</option>
+              <option value="instagram">Instagram</option>
+              <option value="twitter">Twitter/X</option>
+              <option value="friend">Friend / Word of Mouth</option>
+              <option value="artist">Featured Artist</option>
+              <option value="search">Google / Search</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-group">
+            <button type="submit" class="btn btn--primary" style="width: 100%; max-width: 300px;">
+              Submit Application
+            </button>
+          </div>
+        </form>
+
+        <div class="reveal mt-xl" style="max-width: 700px;">
+          <p class="text-muted" style="font-size: var(--text-sm);">
+            By submitting, you confirm that the music you share is yours or you have 
+            rights to perform it. We review every submission personally—please allow 
+            2-4 weeks for a response. Not all submissions will receive a reply, but 
+            every one is heard.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section section--charcoal">
+      <div class="container container--narrow">
+        <div class="section__header reveal">
+          <span class="section__eyebrow">Common Questions</span>
+          <h2 class="section__title">Before you submit</h2>
+        </div>
+
+        <div class="about-section reveal">
+          <div class="about-content">
+            <div>
+              <span class="about-content__label">What are you looking for?</span>
+            </div>
+            <div class="about-content__text">
+              <p>
+                Artists with genuine artistic vision. We don't require you to be famous 
+                or have a certain follower count. We're looking for authenticity, 
+                vocal/musical ability, and an interesting story to tell.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-section reveal">
+          <div class="about-content">
+            <div>
+              <span class="about-content__label">Where are sessions filmed?</span>
+            </div>
+            <div class="about-content__text">
+              <p>
+                Currently in Lagos, Nigeria. If you're based elsewhere, let us know—we 
+                occasionally travel for special sessions, and are exploring ways to 
+                expand our reach.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-section reveal">
+          <div class="about-content">
+            <div>
+              <span class="about-content__label">Is there a cost?</span>
+            </div>
+            <div class="about-content__text">
+              <p>
+                The Soundroom is a creative platform, not a pay-to-play service. 
+                There's no cost to be featured. We cover production; you bring 
+                the music and your presence.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-section reveal">
+          <div class="about-content">
+            <div>
+              <span class="about-content__label">What if I haven't released music yet?</span>
+            </div>
+            <div class="about-content__text">
+              <p>
+                That's okay. Share demos, voice notes, or live recordings. We care 
+                more about potential and authenticity than a polished discography.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <div class="footer__brand">
+          <a href="index.html" class="footer__logo">
+            <img src="assets/logo-white.svg" alt="The Soundroom">
+          </a>
+          <p class="footer__tagline">
+            A room for authentic sound. Intimate live sessions across every genre.
+          </p>
+        </div>
+        
+        <div class="footer__nav">
+          <h4 class="footer__section-title">Navigate</h4>
+          <div class="footer__links">
+            <a href="sessions.html" class="footer__link">Sessions</a>
+            <a href="about.html" class="footer__link">About</a>
+            <a href="submit.html" class="footer__link">Submit</a>
+            <a href="contact.html" class="footer__link">Contact</a>
+          </div>
+        </div>
+        
+        <div class="footer__connect">
+          <h4 class="footer__section-title">Connect</h4>
+          <div class="footer__links">
+            <a href="https://youtube.com" class="footer__link" target="_blank">YouTube</a>
+            <a href="https://instagram.com" class="footer__link" target="_blank">Instagram</a>
+            <a href="https://audiomack.com" class="footer__link" target="_blank">Audiomack</a>
+            <a href="https://spotify.com" class="footer__link" target="_blank">Spotify</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer__bottom">
+        <p class="footer__copyright">
+          © 2026 The Soundroom with Infinity Paul. All rights reserved.
+        </p>
+        <div class="footer__socials">
+          <a href="https://youtube.com" class="footer__social" target="_blank" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+          <a href="https://instagram.com" class="footer__social" target="_blank" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href="https://twitter.com" class="footer__social" target="_blank" aria-label="Twitter">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

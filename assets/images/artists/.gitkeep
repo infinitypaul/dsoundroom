@@ -1,0 +1,12 @@
+# Artist Images Placeholder Directory
+
+Place artist images here with the following naming convention:
+- artist-01.jpg (grid thumbnail, 600x800 portrait)
+- artist-01-hero.jpg (hero background, 1920x1080)
+
+Recommended image specs:
+- Format: JPG or WebP
+- Grid images: 600x800px (3:4 ratio)
+- Hero images: 1920x1080px (16:9 ratio)
+- Style: Cinematic, moody, intimate lighting
+- Color grading: Slightly desaturated, warm blacks

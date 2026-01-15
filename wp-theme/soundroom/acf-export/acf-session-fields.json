@@ -1,0 +1,251 @@
+[
+    {
+        "key": "group_soundroom_session",
+        "title": "Session Details",
+        "fields": [
+            {
+                "key": "field_session_media",
+                "label": "Media Embeds",
+                "name": "",
+                "type": "tab",
+                "placement": "top"
+            },
+            {
+                "key": "field_youtube_url",
+                "label": "YouTube Video URL",
+                "name": "youtube_url",
+                "type": "url",
+                "instructions": "Paste the full YouTube video URL (e.g., https://youtube.com/watch?v=xxxxx)",
+                "required": 0,
+                "placeholder": "https://youtube.com/watch?v=..."
+            },
+            {
+                "key": "field_audiomack_embed",
+                "label": "Audiomack Embed Code",
+                "name": "audiomack_embed",
+                "type": "textarea",
+                "instructions": "Paste the Audiomack iframe embed code here",
+                "required": 0,
+                "rows": 4,
+                "placeholder": "<iframe src=\"https://audiomack.com/embed/...\">"
+            },
+            {
+                "key": "field_session_info",
+                "label": "Session Info",
+                "name": "",
+                "type": "tab",
+                "placement": "top"
+            },
+            {
+                "key": "field_session_genres",
+                "label": "Genres",
+                "name": "session_genres",
+                "type": "taxonomy",
+                "instructions": "Select one or more genres for this session",
+                "required": 1,
+                "taxonomy": "genre",
+                "field_type": "checkbox",
+                "add_term": 1,
+                "save_terms": 1,
+                "load_terms": 1,
+                "return_format": "id",
+                "multiple": 1
+            },
+            {
+                "key": "field_location",
+                "label": "Location",
+                "name": "location",
+                "type": "text",
+                "instructions": "Artist's city/country",
+                "required": 0,
+                "placeholder": "Lagos, Nigeria"
+            },
+            {
+                "key": "field_featured_session",
+                "label": "Featured Session",
+                "name": "_soundroom_featured",
+                "type": "true_false",
+                "instructions": "Show this session on the homepage featured section",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "Featured",
+                "ui_off_text": "Normal"
+            },
+            {
+                "key": "field_social_links",
+                "label": "Social Links",
+                "name": "",
+                "type": "tab",
+                "placement": "top"
+            },
+            {
+                "key": "field_instagram_url",
+                "label": "Instagram URL",
+                "name": "instagram_url",
+                "type": "url",
+                "required": 0,
+                "placeholder": "https://instagram.com/artistname"
+            },
+            {
+                "key": "field_spotify_url",
+                "label": "Spotify URL",
+                "name": "spotify_url",
+                "type": "url",
+                "required": 0,
+                "placeholder": "https://open.spotify.com/artist/..."
+            },
+            {
+                "key": "field_artist_youtube_url",
+                "label": "Artist YouTube Channel",
+                "name": "artist_youtube_url",
+                "type": "url",
+                "required": 0,
+                "placeholder": "https://youtube.com/@artistname"
+            },
+            {
+                "key": "field_artist_audiomack_url",
+                "label": "Artist Audiomack Profile",
+                "name": "artist_audiomack_url",
+                "type": "url",
+                "required": 0,
+                "placeholder": "https://audiomack.com/artistname"
+            },
+            {
+                "key": "field_twitter_url",
+                "label": "Twitter/X URL",
+                "name": "twitter_url",
+                "type": "url",
+                "required": 0,
+                "placeholder": "https://twitter.com/artistname"
+            },
+            {
+                "key": "field_credits_tab",
+                "label": "Credits",
+                "name": "",
+                "type": "tab",
+                "placement": "top"
+            },
+            {
+                "key": "field_credits",
+                "label": "Session Credits",
+                "name": "credits_text",
+                "type": "textarea",
+                "instructions": "Add production credits (one per line, format: Role - Name)",
+                "required": 0,
+                "rows": 6,
+                "placeholder": "Producer - John Doe\nKeys - Jane Smith\nMixing - Studio X\nGuitar - Mike Johnson"
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "session"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "active": true,
+        "show_in_rest": 1
+    },
+    {
+        "key": "group_soundroom_settings",
+        "title": "Soundroom Site Settings",
+        "fields": [
+            {
+                "key": "field_hero_tab",
+                "label": "Homepage Hero",
+                "name": "",
+                "type": "tab",
+                "placement": "left"
+            },
+            {
+                "key": "field_hero_headline",
+                "label": "Hero Headline",
+                "name": "soundroom_headline",
+                "type": "text",
+                "default_value": "A room for authentic sound.",
+                "placeholder": "A room for authentic sound."
+            },
+            {
+                "key": "field_hero_subline",
+                "label": "Hero Subline",
+                "name": "soundroom_subline",
+                "type": "textarea",
+                "rows": 3,
+                "default_value": "Intimate live sessions that strip back the noise and let the music breathe. Worship. Soul. Acoustic. Spoken word. Every genre, one feeling—real."
+            },
+            {
+                "key": "field_hero_image",
+                "label": "Hero Background Image",
+                "name": "soundroom_hero_image",
+                "type": "image",
+                "return_format": "url",
+                "preview_size": "medium",
+                "instructions": "Optional background image for the hero section"
+            },
+            {
+                "key": "field_social_tab",
+                "label": "Social Links",
+                "name": "",
+                "type": "tab",
+                "placement": "left"
+            },
+            {
+                "key": "field_site_youtube",
+                "label": "YouTube Channel URL",
+                "name": "soundroom_youtube",
+                "type": "url",
+                "placeholder": "https://youtube.com/@thesoundroom"
+            },
+            {
+                "key": "field_site_instagram",
+                "label": "Instagram URL",
+                "name": "soundroom_instagram",
+                "type": "url",
+                "placeholder": "https://instagram.com/thesoundroom"
+            },
+            {
+                "key": "field_site_audiomack",
+                "label": "Audiomack URL",
+                "name": "soundroom_audiomack",
+                "type": "url",
+                "placeholder": "https://audiomack.com/thesoundroom"
+            },
+            {
+                "key": "field_site_spotify",
+                "label": "Spotify URL",
+                "name": "soundroom_spotify",
+                "type": "url",
+                "placeholder": "https://open.spotify.com/..."
+            },
+            {
+                "key": "field_site_twitter",
+                "label": "Twitter/X URL",
+                "name": "soundroom_twitter",
+                "type": "url",
+                "placeholder": "https://twitter.com/thesoundroom"
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "options_page",
+                    "operator": "==",
+                    "value": "soundroom-settings"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "active": true
+    }
+]

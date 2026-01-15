@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="white">
+  <rect width="32" height="32" rx="6" fill="#0a0a0a"/>
+  
+  <!-- Simplified waveform + target icon -->
+  <g transform="translate(4, 6)">
+    <!-- Waveform bars -->
+    <rect x="2" y="6" width="3" height="8" rx="1.5"/>
+    <rect x="7" y="3" width="3" height="14" rx="1.5"/>
+    
+    <!-- Center target -->
+    <circle cx="16" cy="10" r="6" fill="none" stroke="white" stroke-width="1.5"/>
+    <circle cx="16" cy="10" r="2.5"/>
+    
+    <!-- Right waveform -->
+    <rect x="22" y="3" width="3" height="14" rx="1.5"/>
+    <rect x="27" y="6" width="3" height="8" rx="1.5" transform="translate(-8, 0)"/>
+  </g>
+</svg>

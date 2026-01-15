@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 60" fill="#0a0a0a">
+  <!-- Waveform bars -->
+  <g transform="translate(0, 5)">
+    <!-- Left waveform group -->
+    <rect x="4" y="15" width="5" height="20" rx="2.5"/>
+    <rect x="12" y="8" width="5" height="34" rx="2.5"/>
+    <rect x="20" y="2" width="5" height="46" rx="2.5"/>
+    <rect x="28" y="8" width="5" height="34" rx="2.5"/>
+    
+    <!-- Center target/record element -->
+    <circle cx="44" cy="25" r="10" fill="none" stroke="#0a0a0a" stroke-width="2"/>
+    <circle cx="44" cy="25" r="4"/>
+    
+    <!-- Right waveform group -->
+    <rect x="55" y="8" width="5" height="34" rx="2.5"/>
+    <rect x="63" y="2" width="5" height="46" rx="2.5"/>
+    <rect x="71" y="8" width="5" height="34" rx="2.5"/>
+    <rect x="79" y="15" width="5" height="20" rx="2.5"/>
+  </g>
+  
+  <!-- Text: THE SOUNDROOM -->
+  <text x="95" y="32" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" letter-spacing="0.05em">
+    THE S<tspan style="font-size: 16px;">◉</tspan>UNDROOM
+  </text>
+  
+  <!-- Subtext: WITH INFINITY PAUL -->
+  <text x="95" y="48" font-family="system-ui, -apple-system, sans-serif" font-size="8" font-weight="500" letter-spacing="0.15em" opacity="0.6">
+    WITH INFINITY PAUL
+  </text>
+</svg>
