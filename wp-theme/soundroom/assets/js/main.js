@@ -227,15 +227,45 @@ function handleContactSubmit(e) {
   button.textContent = 'Sending...';
   button.disabled = true;
 
-  setTimeout(() => {
-    button.textContent = 'Message Sent!';
-    form.reset();
+  // Get form data
+  const formData = new FormData(form);
+  formData.append('action', 'soundroom_contact');
+  formData.append('nonce', form.querySelector('[name="contact_nonce"]')?.value || '');
+
+  // Send to WordPress AJAX
+  fetch(window.soundroom?.ajax_url || '/wp-admin/admin-ajax.php', {
+    method: 'POST',
+    body: formData,
+    credentials: 'same-origin'
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      button.textContent = 'Message Sent!';
+      form.reset();
+      
+      setTimeout(() => {
+        button.textContent = originalText;
+        button.disabled = false;
+      }, 3000);
+    } else {
+      button.textContent = 'Error - Try Again';
+      button.disabled = false;
+      
+      setTimeout(() => {
+        button.textContent = originalText;
+      }, 3000);
+    }
+  })
+  .catch(error => {
+    console.error('Contact form error:', error);
+    button.textContent = 'Error - Try Again';
     
     setTimeout(() => {
       button.textContent = originalText;
       button.disabled = false;
     }, 3000);
-  }, 1500);
+  });
 }
 
 function handleArtistSubmit(e) {
@@ -247,18 +277,47 @@ function handleArtistSubmit(e) {
   button.textContent = 'Submitting...';
   button.disabled = true;
 
-  setTimeout(() => {
-    button.textContent = 'Application Received!';
-    form.reset();
-    
-    // Scroll to top of form
-    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // Get form data
+  const formData = new FormData(form);
+  formData.append('action', 'soundroom_submission');
+  formData.append('nonce', form.querySelector('[name="submission_nonce"]')?.value || '');
+
+  // Send to WordPress AJAX
+  fetch(window.soundroom?.ajax_url || '/wp-admin/admin-ajax.php', {
+    method: 'POST',
+    body: formData,
+    credentials: 'same-origin'
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      button.textContent = 'Application Received!';
+      form.reset();
+      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      
+      setTimeout(() => {
+        button.textContent = originalText;
+        button.disabled = false;
+      }, 4000);
+    } else {
+      button.textContent = 'Error - Try Again';
+      button.disabled = false;
+      console.error('Submission error:', data);
+      
+      setTimeout(() => {
+        button.textContent = originalText;
+      }, 3000);
+    }
+  })
+  .catch(error => {
+    console.error('Submission failed:', error);
+    button.textContent = 'Error - Try Again';
     
     setTimeout(() => {
       button.textContent = originalText;
       button.disabled = false;
-    }, 4000);
-  }, 2000);
+    }, 3000);
+  });
 }
 
 /**

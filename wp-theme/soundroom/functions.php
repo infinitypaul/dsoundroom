@@ -325,6 +325,41 @@ add_action('wp_ajax_soundroom_submission', 'soundroom_submission_handler');
 add_action('wp_ajax_nopriv_soundroom_submission', 'soundroom_submission_handler');
 
 /**
+ * Contact Form Handler
+ */
+function soundroom_contact_handler() {
+    check_ajax_referer('soundroom_nonce', 'nonce');
+    
+    $data = array(
+        'name'    => sanitize_text_field($_POST['name']),
+        'email'   => sanitize_email($_POST['email']),
+        'subject' => sanitize_text_field($_POST['subject']),
+        'message' => sanitize_textarea_field($_POST['message']),
+        'date'    => current_time('mysql'),
+    );
+    
+    // Store contact message
+    $contacts = get_option('soundroom_contacts', array());
+    $contacts[] = $data;
+    update_option('soundroom_contacts', $contacts);
+    
+    // Send notification email
+    $admin_email = get_option('admin_email');
+    $subject = 'Soundroom Contact: ' . ucfirst($data['subject']) . ' from ' . $data['name'];
+    $message = "New contact message received:\n\n";
+    $message .= "Name: " . $data['name'] . "\n";
+    $message .= "Email: " . $data['email'] . "\n";
+    $message .= "Subject: " . ucfirst($data['subject']) . "\n";
+    $message .= "Message:\n" . $data['message'] . "\n";
+    
+    wp_mail($admin_email, $subject, $message);
+    
+    wp_send_json_success(array('message' => 'Message sent! We\'ll get back to you soon.'));
+}
+add_action('wp_ajax_soundroom_contact', 'soundroom_contact_handler');
+add_action('wp_ajax_nopriv_soundroom_contact', 'soundroom_contact_handler');
+
+/**
  * Add body classes
  */
 function soundroom_body_classes($classes) {

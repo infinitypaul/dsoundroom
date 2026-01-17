@@ -37,13 +37,21 @@ get_header();
                 <div class="contact-item">
                     <h3 class="contact-item__title"><?php esc_html_e('Follow', 'soundroom'); ?></h3>
                     <div class="contact-socials">
-                        <?php if ($youtube = get_option('soundroom_youtube')): ?>
+                        <?php if ($youtube = get_theme_mod('soundroom_youtube')): ?>
                             <a href="<?php echo esc_url($youtube); ?>" target="_blank"><?php esc_html_e('YouTube', 'soundroom'); ?></a>
                         <?php endif; ?>
-                        <?php if ($instagram = get_option('soundroom_instagram')): ?>
+                        <?php if ($instagram = get_theme_mod('soundroom_instagram')): ?>
                             <a href="<?php echo esc_url($instagram); ?>" target="_blank"><?php esc_html_e('Instagram', 'soundroom'); ?></a>
                         <?php endif; ?>
-                        <a href="https://twitter.com" target="_blank"><?php esc_html_e('Twitter', 'soundroom'); ?></a>
+                        <?php if ($twitter = get_theme_mod('soundroom_twitter')): ?>
+                            <a href="<?php echo esc_url($twitter); ?>" target="_blank"><?php esc_html_e('Twitter', 'soundroom'); ?></a>
+                        <?php endif; ?>
+                        <?php if ($audiomack = get_theme_mod('soundroom_audiomack')): ?>
+                            <a href="<?php echo esc_url($audiomack); ?>" target="_blank"><?php esc_html_e('Audiomack', 'soundroom'); ?></a>
+                        <?php endif; ?>
+                        <?php if ($spotify = get_theme_mod('soundroom_spotify')): ?>
+                            <a href="<?php echo esc_url($spotify); ?>" target="_blank"><?php esc_html_e('Spotify', 'soundroom'); ?></a>
+                        <?php endif; ?>
                     </div>
                 </div>
                 

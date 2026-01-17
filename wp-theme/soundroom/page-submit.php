@@ -31,7 +31,7 @@ get_header();
 <!-- Submit Form -->
 <section class="section--dark" style="padding-top: 0;">
     <div class="container">
-        <form class="submission-form reveal" id="submissionForm">
+        <form class="submission-form reveal" id="submitForm">
             <?php wp_nonce_field('soundroom_nonce', 'submission_nonce'); ?>
             
             <div class="form-group">
