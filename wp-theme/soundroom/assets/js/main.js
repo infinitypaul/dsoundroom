@@ -199,23 +199,53 @@ function initForms() {
 function handleNewsletterSubmit(e) {
   e.preventDefault();
   const form = e.target;
-  const email = form.querySelector('input[type="email"]').value;
-  
-  // Simulate submission
   const button = form.querySelector('button');
   const originalText = button.textContent;
+  
   button.textContent = 'Joining...';
   button.disabled = true;
 
-  setTimeout(() => {
-    button.textContent = 'Welcome!';
-    form.querySelector('input').value = '';
-    
+  // Get form data
+  const formData = new FormData(form);
+  formData.append('action', 'soundroom_newsletter');
+  formData.append('nonce', form.querySelector('[name="newsletter_nonce"]')?.value || '');
+
+  console.log('Newsletter submit - AJAX URL:', window.soundroom?.ajax_url);
+
+  // Send to WordPress AJAX
+  fetch(window.soundroom?.ajax_url || '/wp-admin/admin-ajax.php', {
+    method: 'POST',
+    body: formData,
+    credentials: 'same-origin'
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Newsletter response:', data);
+    if (data.success) {
+      button.textContent = 'Welcome!';
+      form.reset();
+      
+      setTimeout(() => {
+        button.textContent = originalText;
+        button.disabled = false;
+      }, 2000);
+    } else {
+      button.textContent = 'Error';
+      console.error('Newsletter error:', data);
+      setTimeout(() => {
+        button.textContent = originalText;
+        button.disabled = false;
+      }, 2000);
+    }
+  })
+  .catch(error => {
+    console.error('Newsletter failed:', error);
+    button.textContent = 'Error';
     setTimeout(() => {
       button.textContent = originalText;
       button.disabled = false;
     }, 2000);
-  }, 1000);
+  });
 }
 
 function handleContactSubmit(e) {
@@ -232,14 +262,21 @@ function handleContactSubmit(e) {
   formData.append('action', 'soundroom_contact');
   formData.append('nonce', form.querySelector('[name="contact_nonce"]')?.value || '');
 
+  console.log('Contact submit - AJAX URL:', window.soundroom?.ajax_url);
+  console.log('Contact nonce:', form.querySelector('[name="contact_nonce"]')?.value);
+
   // Send to WordPress AJAX
   fetch(window.soundroom?.ajax_url || '/wp-admin/admin-ajax.php', {
     method: 'POST',
     body: formData,
     credentials: 'same-origin'
   })
-  .then(response => response.json())
+  .then(response => {
+    console.log('Contact response status:', response.status);
+    return response.json();
+  })
   .then(data => {
+    console.log('Contact response data:', data);
     if (data.success) {
       button.textContent = 'Message Sent!';
       form.reset();
@@ -251,6 +288,7 @@ function handleContactSubmit(e) {
     } else {
       button.textContent = 'Error - Try Again';
       button.disabled = false;
+      console.error('Contact error:', data);
       
       setTimeout(() => {
         button.textContent = originalText;
@@ -282,14 +320,21 @@ function handleArtistSubmit(e) {
   formData.append('action', 'soundroom_submission');
   formData.append('nonce', form.querySelector('[name="submission_nonce"]')?.value || '');
 
+  console.log('Submit form - AJAX URL:', window.soundroom?.ajax_url);
+  console.log('Submit nonce:', form.querySelector('[name="submission_nonce"]')?.value);
+
   // Send to WordPress AJAX
   fetch(window.soundroom?.ajax_url || '/wp-admin/admin-ajax.php', {
     method: 'POST',
     body: formData,
     credentials: 'same-origin'
   })
-  .then(response => response.json())
+  .then(response => {
+    console.log('Submit response status:', response.status);
+    return response.json();
+  })
   .then(data => {
+    console.log('Submit response data:', data);
     if (data.success) {
       button.textContent = 'Application Received!';
       form.reset();
