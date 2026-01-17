@@ -326,7 +326,14 @@ function soundroom_submission_handler() {
     // Simple headers - let WordPress handle From address
     $headers = array('Reply-To: ' . $data['name'] . ' <' . $data['email'] . '>');
     
-    wp_mail($admin_email, $subject, $message, $headers);
+    $mail_sent = wp_mail($admin_email, $subject, $message, $headers);
+    
+    // Log email result for debugging
+    if (!$mail_sent) {
+        error_log('Soundroom: Failed to send submission email to ' . $admin_email);
+    } else {
+        error_log('Soundroom: Submission email sent successfully to ' . $admin_email);
+    }
     
     wp_send_json_success(array('message' => 'Application received! We\'ll be in touch.'));
 }
@@ -367,7 +374,14 @@ function soundroom_contact_handler() {
     // Simple headers - let WordPress handle From address
     $headers = array('Reply-To: ' . $data['name'] . ' <' . $data['email'] . '>');
     
-    wp_mail($admin_email, $email_subject, $email_message, $headers);
+    $mail_sent = wp_mail($admin_email, $email_subject, $email_message, $headers);
+    
+    // Log email result for debugging
+    if (!$mail_sent) {
+        error_log('Soundroom: Failed to send contact email to ' . $admin_email);
+    } else {
+        error_log('Soundroom: Contact email sent successfully to ' . $admin_email);
+    }
     
     wp_send_json_success(array('message' => 'Message sent! We\'ll get back to you soon.'));
 }
