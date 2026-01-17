@@ -9,55 +9,60 @@ get_header();
 ?>
 
 <!-- Submit Hero -->
-<section class="about-hero">
+<section class="submit-hero">
     <div class="container">
-        <div class="reveal">
+        <div class="submit-hero__content reveal">
             <span class="section__eyebrow"><?php esc_html_e('Be Featured', 'soundroom'); ?></span>
-            <h1 class="about-hero__title"><?php esc_html_e('Share your sound', 'soundroom'); ?></h1>
-            <p class="about-hero__intro">
+            <h1 class="submit-hero__title"><?php esc_html_e('Share your sound', 'soundroom'); ?></h1>
+            <p class="submit-hero__text">
                 <?php esc_html_e("The Soundroom is always listening. If you're an artist with something genuine to say—regardless of genre—we'd love to hear from you.", 'soundroom'); ?>
-            </p>
-        </div>
-        
-        <div class="callout reveal" style="margin-top: var(--space-xl);">
-            <p>
-                <strong><?php esc_html_e('How it works:', 'soundroom'); ?></strong>
-                <?php esc_html_e("Sessions are curated by invitation and submission. We prioritize artistic intention over follower counts, and authenticity over polish. If your submission resonates, we'll reach out to discuss next steps.", 'soundroom'); ?>
             </p>
         </div>
     </div>
 </section>
 
 <!-- Submit Form -->
-<section class="section--dark" style="padding-top: 0;">
+<section class="submit-form-section section--dark">
     <div class="container">
-        <form class="submission-form reveal" id="submitForm">
+        <div class="reveal">
+            <div class="form-note mb-xl" style="max-width: 700px;">
+                <strong><?php esc_html_e('How it works:', 'soundroom'); ?></strong>
+                <?php esc_html_e("Sessions are curated by invitation and submission. We prioritize artistic intention over follower counts, and authenticity over polish. If your submission resonates, we'll reach out to discuss next steps.", 'soundroom'); ?>
+            </div>
+        </div>
+
+        <form class="form reveal" id="submitForm">
             <?php wp_nonce_field('soundroom_nonce', 'submission_nonce'); ?>
             
+            <!-- Name -->
             <div class="form-group">
                 <label for="name" class="form-label"><?php esc_html_e('Artist / Stage Name', 'soundroom'); ?> *</label>
-                <input type="text" id="name" name="name" class="form-input" required>
+                <input type="text" id="name" name="name" class="form-input" required placeholder="<?php esc_attr_e('Your name or stage name', 'soundroom'); ?>">
             </div>
             
+            <!-- Email -->
             <div class="form-group">
                 <label for="email" class="form-label"><?php esc_html_e('Email Address', 'soundroom'); ?> *</label>
-                <input type="email" id="email" name="email" class="form-input" required>
+                <input type="email" id="email" name="email" class="form-input" required placeholder="<?php esc_attr_e('your@email.com', 'soundroom'); ?>">
             </div>
             
+            <!-- Phone (Optional) -->
             <div class="form-group">
                 <label for="phone" class="form-label"><?php esc_html_e('Phone / WhatsApp (Optional)', 'soundroom'); ?></label>
-                <input type="text" id="phone" name="phone" class="form-input">
+                <input type="text" id="phone" name="phone" class="form-input" placeholder="<?php esc_attr_e('+234 xxx xxx xxxx', 'soundroom'); ?>">
             </div>
             
+            <!-- Location -->
             <div class="form-group">
                 <label for="location" class="form-label"><?php esc_html_e('Location', 'soundroom'); ?> *</label>
-                <input type="text" id="location" name="location" class="form-input" placeholder="<?php esc_attr_e('Lagos, Nigeria', 'soundroom'); ?>" required>
+                <input type="text" id="location" name="location" class="form-input" required placeholder="<?php esc_attr_e('City, Country', 'soundroom'); ?>">
             </div>
             
+            <!-- Genre / Vibe -->
             <div class="form-group">
                 <label for="genre" class="form-label"><?php esc_html_e('Genre / Vibe', 'soundroom'); ?> *</label>
                 <select id="genre" name="genre" class="form-select" required>
-                    <option value=""><?php esc_html_e('Select your primary genre', 'soundroom'); ?></option>
+                    <option value="" disabled selected><?php esc_html_e('Select your primary genre', 'soundroom'); ?></option>
                     <option value="worship"><?php esc_html_e('Worship', 'soundroom'); ?></option>
                     <option value="afro-soul"><?php esc_html_e('Afro-soul', 'soundroom'); ?></option>
                     <option value="soul-rnb"><?php esc_html_e('Soul / R&B', 'soundroom'); ?></option>
@@ -70,30 +75,35 @@ get_header();
                 </select>
             </div>
             
+            <!-- Music Links -->
             <div class="form-group">
                 <label for="music_links" class="form-label"><?php esc_html_e('Links to Your Music', 'soundroom'); ?> *</label>
-                <textarea id="music_links" name="music_links" class="form-textarea" rows="3" placeholder="<?php esc_attr_e('YouTube, Audiomack, Spotify, SoundCloud, etc.', 'soundroom'); ?>" required></textarea>
+                <textarea id="music_links" name="music_links" class="form-textarea" rows="3" required placeholder="<?php esc_attr_e('Share links to your music (YouTube, Spotify, Audiomack, SoundCloud, etc.)', 'soundroom'); ?>"></textarea>
             </div>
             
+            <!-- Social Links -->
             <div class="form-group">
-                <label for="social_links" class="form-label"><?php esc_html_e('Social Media Link', 'soundroom'); ?></label>
-                <input type="text" id="social_links" name="social_links" class="form-input" placeholder="<?php esc_attr_e('Instagram, Twitter, etc.', 'soundroom'); ?>">
+                <label for="social_links" class="form-label"><?php esc_html_e('Social Media Links', 'soundroom'); ?></label>
+                <textarea id="social_links" name="social_links" class="form-textarea" rows="2" placeholder="<?php esc_attr_e('Instagram, Twitter/X, TikTok, etc.', 'soundroom'); ?>"></textarea>
             </div>
             
+            <!-- Intent -->
             <div class="form-group">
                 <label for="intent" class="form-label"><?php esc_html_e('Your Intent / What This Session Would Mean', 'soundroom'); ?> *</label>
-                <textarea id="intent" name="intent" class="form-textarea" rows="4" placeholder="<?php esc_attr_e("Tell us why you want to be on The Soundroom. What does your music mean to you?", 'soundroom'); ?>" required></textarea>
+                <textarea id="intent" name="intent" class="form-textarea" rows="4" required placeholder="<?php esc_attr_e('Tell us about yourself and your music. What would a Soundroom session mean to you? What story do you want to tell?', 'soundroom'); ?>"></textarea>
             </div>
             
+            <!-- Song Choice -->
             <div class="form-group">
                 <label for="song" class="form-label"><?php esc_html_e('What Song Would You Perform?', 'soundroom'); ?></label>
-                <textarea id="song" name="song" class="form-textarea" rows="2" placeholder="<?php esc_attr_e('Song title and a brief description', 'soundroom'); ?>"></textarea>
+                <textarea id="song" name="song" class="form-textarea" rows="2" placeholder="<?php esc_attr_e('If selected, what song(s) would you want to perform in the room? Original or cover?', 'soundroom'); ?>"></textarea>
             </div>
             
+            <!-- How Did You Hear -->
             <div class="form-group">
                 <label for="source" class="form-label"><?php esc_html_e('How Did You Hear About The Soundroom?', 'soundroom'); ?></label>
                 <select id="source" name="source" class="form-select">
-                    <option value=""><?php esc_html_e('Select an option', 'soundroom'); ?></option>
+                    <option value="" disabled selected><?php esc_html_e('Select an option', 'soundroom'); ?></option>
                     <option value="youtube"><?php esc_html_e('YouTube', 'soundroom'); ?></option>
                     <option value="instagram"><?php esc_html_e('Instagram', 'soundroom'); ?></option>
                     <option value="twitter"><?php esc_html_e('Twitter/X', 'soundroom'); ?></option>
@@ -104,12 +114,19 @@ get_header();
                 </select>
             </div>
             
+            <!-- Submit Button -->
             <div class="form-group">
-                <button type="submit" class="btn btn--primary btn--large" style="width: 100%;">
+                <button type="submit" class="btn btn--primary" style="width: 100%; max-width: 300px;">
                     <?php esc_html_e('Submit Application', 'soundroom'); ?>
                 </button>
             </div>
         </form>
+
+        <div class="reveal mt-xl" style="max-width: 700px;">
+            <p class="text-muted" style="font-size: var(--text-sm);">
+                <?php esc_html_e("By submitting, you confirm that the music you share is yours or you have rights to perform it. We review every submission personally—please allow 2-4 weeks for a response. Not all submissions will receive a reply, but every one is heard.", 'soundroom'); ?>
+            </p>
+        </div>
     </div>
 </section>
 
@@ -117,28 +134,59 @@ get_header();
 <section class="section section--charcoal">
     <div class="container container--narrow">
         <div class="section__header reveal">
-            <span class="section__eyebrow"><?php esc_html_e('FAQ', 'soundroom'); ?></span>
-            <h2 class="section__title"><?php esc_html_e('Common questions', 'soundroom'); ?></h2>
+            <span class="section__eyebrow"><?php esc_html_e('Common Questions', 'soundroom'); ?></span>
+            <h2 class="section__title"><?php esc_html_e('Before you submit', 'soundroom'); ?></h2>
         </div>
-        
-        <div class="faq-list">
-            <div class="faq-item reveal">
-                <h3 class="faq-item__question"><?php esc_html_e('What happens after I submit?', 'soundroom'); ?></h3>
-                <p class="faq-item__answer">
-                    <?php esc_html_e("We review every submission personally. If your sound resonates with The Soundroom vision, we'll reach out within 2-3 weeks to discuss next steps.", 'soundroom'); ?>
-                </p>
+
+        <div class="about-section reveal">
+            <div class="about-content">
+                <div>
+                    <span class="about-content__label"><?php esc_html_e('What are you looking for?', 'soundroom'); ?></span>
+                </div>
+                <div class="about-content__text">
+                    <p>
+                        <?php esc_html_e("Artists with genuine artistic vision. We don't require you to be famous or have a certain follower count. We're looking for authenticity, vocal/musical ability, and an interesting story to tell.", 'soundroom'); ?>
+                    </p>
+                </div>
             </div>
-            <div class="faq-item reveal">
-                <h3 class="faq-item__question"><?php esc_html_e('Do I need a certain follower count?', 'soundroom'); ?></h3>
-                <p class="faq-item__answer">
-                    <?php esc_html_e("No. We care about artistry and authenticity, not metrics. Some of our most powerful sessions have featured emerging artists with small but devoted audiences.", 'soundroom'); ?>
-                </p>
+        </div>
+
+        <div class="about-section reveal">
+            <div class="about-content">
+                <div>
+                    <span class="about-content__label"><?php esc_html_e('Where are sessions filmed?', 'soundroom'); ?></span>
+                </div>
+                <div class="about-content__text">
+                    <p>
+                        <?php esc_html_e("Currently in Lagos, Nigeria. If you're based elsewhere, let us know—we occasionally travel for special sessions, and are exploring ways to expand our reach.", 'soundroom'); ?>
+                    </p>
+                </div>
             </div>
-            <div class="faq-item reveal">
-                <h3 class="faq-item__question"><?php esc_html_e('Where are sessions filmed?', 'soundroom'); ?></h3>
-                <p class="faq-item__answer">
-                    <?php esc_html_e("Sessions are currently filmed in Lagos, Nigeria. We may expand to other cities in the future.", 'soundroom'); ?>
-                </p>
+        </div>
+
+        <div class="about-section reveal">
+            <div class="about-content">
+                <div>
+                    <span class="about-content__label"><?php esc_html_e('Is there a cost?', 'soundroom'); ?></span>
+                </div>
+                <div class="about-content__text">
+                    <p>
+                        <?php esc_html_e("The Soundroom is a creative platform, not a pay-to-play service. There's no cost to be featured. We cover production; you bring the music and your presence.", 'soundroom'); ?>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-section reveal">
+            <div class="about-content">
+                <div>
+                    <span class="about-content__label"><?php esc_html_e("What if I haven't released music yet?", 'soundroom'); ?></span>
+                </div>
+                <div class="about-content__text">
+                    <p>
+                        <?php esc_html_e("That's okay. Share demos, voice notes, or live recordings. We care more about potential and authenticity than a polished discography.", 'soundroom'); ?>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
