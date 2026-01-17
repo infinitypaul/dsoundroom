@@ -310,14 +310,21 @@ function soundroom_submission_handler() {
     $submissions[] = $data;
     update_option('soundroom_submissions', $submissions);
     
-    // Send notification email
+    // Send notification email with proper headers
     $admin_email = get_option('admin_email');
     $subject = 'New Soundroom Session Submission: ' . $data['name'];
     $message = "New submission received:\n\n";
     foreach ($data as $key => $value) {
         $message .= ucfirst(str_replace('_', ' ', $key)) . ": " . $value . "\n";
     }
-    wp_mail($admin_email, $subject, $message);
+    
+    $headers = array(
+        'Content-Type: text/plain; charset=UTF-8',
+        'From: The Soundroom <' . $admin_email . '>',
+        'Reply-To: ' . $data['email'],
+    );
+    
+    wp_mail($admin_email, $subject, $message, $headers);
     
     wp_send_json_success(array('message' => 'Application received! We\'ll be in touch.'));
 }
@@ -343,16 +350,22 @@ function soundroom_contact_handler() {
     $contacts[] = $data;
     update_option('soundroom_contacts', $contacts);
     
-    // Send notification email
+    // Send notification email with proper headers
     $admin_email = get_option('admin_email');
-    $subject = 'Soundroom Contact: ' . ucfirst($data['subject']) . ' from ' . $data['name'];
-    $message = "New contact message received:\n\n";
-    $message .= "Name: " . $data['name'] . "\n";
-    $message .= "Email: " . $data['email'] . "\n";
-    $message .= "Subject: " . ucfirst($data['subject']) . "\n";
-    $message .= "Message:\n" . $data['message'] . "\n";
+    $email_subject = 'Soundroom Contact: ' . ucfirst($data['subject']) . ' from ' . $data['name'];
+    $email_message = "New contact message received:\n\n";
+    $email_message .= "Name: " . $data['name'] . "\n";
+    $email_message .= "Email: " . $data['email'] . "\n";
+    $email_message .= "Subject: " . ucfirst($data['subject']) . "\n";
+    $email_message .= "Message:\n" . $data['message'] . "\n";
     
-    wp_mail($admin_email, $subject, $message);
+    $headers = array(
+        'Content-Type: text/plain; charset=UTF-8',
+        'From: The Soundroom <' . $admin_email . '>',
+        'Reply-To: ' . $data['email'],
+    );
+    
+    wp_mail($admin_email, $email_subject, $email_message, $headers);
     
     wp_send_json_success(array('message' => 'Message sent! We\'ll get back to you soon.'));
 }
@@ -493,4 +506,177 @@ function soundroom_get_option($key, $default = '') {
         $value = get_option($key, $default);
     }
     return $value;
+}
+
+/**
+ * Add Admin Menu for Submissions
+ */
+function soundroom_admin_menu() {
+    add_menu_page(
+        __('Soundroom', 'soundroom'),
+        __('Soundroom', 'soundroom'),
+        'manage_options',
+        'soundroom-submissions',
+        'soundroom_submissions_page',
+        'dashicons-format-audio',
+        30
+    );
+    
+    add_submenu_page(
+        'soundroom-submissions',
+        __('Artist Submissions', 'soundroom'),
+        __('Submissions', 'soundroom'),
+        'manage_options',
+        'soundroom-submissions',
+        'soundroom_submissions_page'
+    );
+    
+    add_submenu_page(
+        'soundroom-submissions',
+        __('Contact Messages', 'soundroom'),
+        __('Messages', 'soundroom'),
+        'manage_options',
+        'soundroom-contacts',
+        'soundroom_contacts_page'
+    );
+    
+    add_submenu_page(
+        'soundroom-submissions',
+        __('Newsletter Subscribers', 'soundroom'),
+        __('Subscribers', 'soundroom'),
+        'manage_options',
+        'soundroom-subscribers',
+        'soundroom_subscribers_page'
+    );
+}
+add_action('admin_menu', 'soundroom_admin_menu');
+
+/**
+ * Submissions Admin Page
+ */
+function soundroom_submissions_page() {
+    $submissions = get_option('soundroom_submissions', array());
+    $submissions = array_reverse($submissions); // Show newest first
+    ?>
+    <div class="wrap">
+        <h1><?php esc_html_e('Artist Submissions', 'soundroom'); ?></h1>
+        
+        <?php if (empty($submissions)): ?>
+            <p><?php esc_html_e('No submissions yet.', 'soundroom'); ?></p>
+        <?php else: ?>
+            <p><?php printf(__('Total submissions: %d', 'soundroom'), count($submissions)); ?></p>
+            <table class="wp-list-table widefat fixed striped">
+                <thead>
+                    <tr>
+                        <th><?php esc_html_e('Date', 'soundroom'); ?></th>
+                        <th><?php esc_html_e('Artist Name', 'soundroom'); ?></th>
+                        <th><?php esc_html_e('Email', 'soundroom'); ?></th>
+                        <th><?php esc_html_e('Location', 'soundroom'); ?></th>
+                        <th><?php esc_html_e('Genre', 'soundroom'); ?></th>
+                        <th><?php esc_html_e('Music Links', 'soundroom'); ?></th>
+                        <th><?php esc_html_e('Intent', 'soundroom'); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($submissions as $sub): ?>
+                        <tr>
+                            <td><?php echo esc_html($sub['date'] ?? 'N/A'); ?></td>
+                            <td><strong><?php echo esc_html($sub['name'] ?? ''); ?></strong></td>
+                            <td><a href="mailto:<?php echo esc_attr($sub['email'] ?? ''); ?>"><?php echo esc_html($sub['email'] ?? ''); ?></a></td>
+                            <td><?php echo esc_html($sub['location'] ?? ''); ?></td>
+                            <td><?php echo esc_html($sub['genre'] ?? ''); ?></td>
+                            <td><?php echo wp_kses_post(nl2br($sub['music_links'] ?? '')); ?></td>
+                            <td><?php echo esc_html(substr($sub['intent'] ?? '', 0, 100)) . '...'; ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+    </div>
+    <?php
+}
+
+/**
+ * Contacts Admin Page
+ */
+function soundroom_contacts_page() {
+    $contacts = get_option('soundroom_contacts', array());
+    $contacts = array_reverse($contacts);
+    ?>
+    <div class="wrap">
+        <h1><?php esc_html_e('Contact Messages', 'soundroom'); ?></h1>
+        
+        <?php if (empty($contacts)): ?>
+            <p><?php esc_html_e('No contact messages yet.', 'soundroom'); ?></p>
+        <?php else: ?>
+            <p><?php printf(__('Total messages: %d', 'soundroom'), count($contacts)); ?></p>
+            <table class="wp-list-table widefat fixed striped">
+                <thead>
+                    <tr>
+                        <th><?php esc_html_e('Date', 'soundroom'); ?></th>
+                        <th><?php esc_html_e('Name', 'soundroom'); ?></th>
+                        <th><?php esc_html_e('Email', 'soundroom'); ?></th>
+                        <th><?php esc_html_e('Subject', 'soundroom'); ?></th>
+                        <th><?php esc_html_e('Message', 'soundroom'); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($contacts as $contact): ?>
+                        <tr>
+                            <td><?php echo esc_html($contact['date'] ?? 'N/A'); ?></td>
+                            <td><strong><?php echo esc_html($contact['name'] ?? ''); ?></strong></td>
+                            <td><a href="mailto:<?php echo esc_attr($contact['email'] ?? ''); ?>"><?php echo esc_html($contact['email'] ?? ''); ?></a></td>
+                            <td><?php echo esc_html(ucfirst($contact['subject'] ?? '')); ?></td>
+                            <td><?php echo esc_html($contact['message'] ?? ''); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+    </div>
+    <?php
+}
+
+/**
+ * Subscribers Admin Page
+ */
+function soundroom_subscribers_page() {
+    $subscribers = get_option('soundroom_subscribers', array());
+    $subscribers = array_reverse($subscribers);
+    ?>
+    <div class="wrap">
+        <h1><?php esc_html_e('Newsletter Subscribers', 'soundroom'); ?></h1>
+        
+        <?php if (empty($subscribers)): ?>
+            <p><?php esc_html_e('No subscribers yet.', 'soundroom'); ?></p>
+        <?php else: ?>
+            <p><?php printf(__('Total subscribers: %d', 'soundroom'), count($subscribers)); ?></p>
+            
+            <h3><?php esc_html_e('Export Emails', 'soundroom'); ?></h3>
+            <textarea class="large-text" rows="5" readonly><?php 
+                $emails = array_column($subscribers, 'email');
+                echo esc_textarea(implode(', ', $emails));
+            ?></textarea>
+            <p class="description"><?php esc_html_e('Copy these emails to import into Mailchimp, ConvertKit, etc.', 'soundroom'); ?></p>
+            
+            <h3><?php esc_html_e('All Subscribers', 'soundroom'); ?></h3>
+            <table class="wp-list-table widefat fixed striped">
+                <thead>
+                    <tr>
+                        <th><?php esc_html_e('Date', 'soundroom'); ?></th>
+                        <th><?php esc_html_e('Email', 'soundroom'); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($subscribers as $sub): ?>
+                        <tr>
+                            <td><?php echo esc_html($sub['date'] ?? 'N/A'); ?></td>
+                            <td><a href="mailto:<?php echo esc_attr($sub['email'] ?? ''); ?>"><?php echo esc_html($sub['email'] ?? ''); ?></a></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+    </div>
+    <?php
 }
