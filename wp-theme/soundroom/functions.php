@@ -310,19 +310,21 @@ function soundroom_submission_handler() {
     $submissions[] = $data;
     update_option('soundroom_submissions', $submissions);
     
-    // Send notification email with proper headers
+    // Send notification email
     $admin_email = get_option('admin_email');
-    $subject = 'New Soundroom Session Submission: ' . $data['name'];
-    $message = "New submission received:\n\n";
+    $subject = '[DSoundRoom] New Session Submission: ' . $data['name'];
+    $message = "New artist submission received!\n\n";
+    $message .= "=================================\n\n";
     foreach ($data as $key => $value) {
-        $message .= ucfirst(str_replace('_', ' ', $key)) . ": " . $value . "\n";
+        if (!empty($value)) {
+            $message .= ucfirst(str_replace('_', ' ', $key)) . ":\n" . $value . "\n\n";
+        }
     }
+    $message .= "=================================\n";
+    $message .= "Reply directly to: " . $data['email'] . "\n";
     
-    $headers = array(
-        'Content-Type: text/plain; charset=UTF-8',
-        'From: The Soundroom <' . $admin_email . '>',
-        'Reply-To: ' . $data['email'],
-    );
+    // Simple headers - let WordPress handle From address
+    $headers = array('Reply-To: ' . $data['name'] . ' <' . $data['email'] . '>');
     
     wp_mail($admin_email, $subject, $message, $headers);
     
@@ -350,20 +352,20 @@ function soundroom_contact_handler() {
     $contacts[] = $data;
     update_option('soundroom_contacts', $contacts);
     
-    // Send notification email with proper headers
+    // Send notification email
     $admin_email = get_option('admin_email');
-    $email_subject = 'Soundroom Contact: ' . ucfirst($data['subject']) . ' from ' . $data['name'];
-    $email_message = "New contact message received:\n\n";
-    $email_message .= "Name: " . $data['name'] . "\n";
+    $email_subject = '[DSoundRoom] Contact: ' . ucfirst($data['subject']) . ' from ' . $data['name'];
+    $email_message = "New contact message received!\n\n";
+    $email_message .= "=================================\n\n";
+    $email_message .= "From: " . $data['name'] . "\n";
     $email_message .= "Email: " . $data['email'] . "\n";
-    $email_message .= "Subject: " . ucfirst($data['subject']) . "\n";
-    $email_message .= "Message:\n" . $data['message'] . "\n";
+    $email_message .= "Subject: " . ucfirst($data['subject']) . "\n\n";
+    $email_message .= "Message:\n" . $data['message'] . "\n\n";
+    $email_message .= "=================================\n";
+    $email_message .= "Reply directly to: " . $data['email'] . "\n";
     
-    $headers = array(
-        'Content-Type: text/plain; charset=UTF-8',
-        'From: The Soundroom <' . $admin_email . '>',
-        'Reply-To: ' . $data['email'],
-    );
+    // Simple headers - let WordPress handle From address
+    $headers = array('Reply-To: ' . $data['name'] . ' <' . $data['email'] . '>');
     
     wp_mail($admin_email, $email_subject, $email_message, $headers);
     
