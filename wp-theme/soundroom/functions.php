@@ -389,6 +389,114 @@ add_action('wp_ajax_soundroom_contact', 'soundroom_contact_handler');
 add_action('wp_ajax_nopriv_soundroom_contact', 'soundroom_contact_handler');
 
 /**
+ * AJAX handler for infinite scroll sessions
+ */
+function soundroom_load_more_sessions() {
+    $page = isset($_POST['page']) ? absint($_POST['page']) : 1;
+    $filter = isset($_POST['filter']) ? sanitize_text_field($_POST['filter']) : 'all';
+    $per_page = 9;
+    
+    $args = array(
+        'post_type'      => 'session',
+        'posts_per_page' => $per_page,
+        'paged'          => $page,
+        'orderby'        => 'date',
+        'order'          => 'DESC',
+        'post_status'    => 'publish',
+    );
+    
+    // Add genre filter if not 'all'
+    if ($filter !== 'all' && !empty($filter)) {
+        $args['tax_query'] = array(
+            array(
+                'taxonomy' => 'genre',
+                'field'    => 'slug',
+                'terms'    => $filter,
+            ),
+        );
+    }
+    
+    $query = new WP_Query($args);
+    $html = '';
+    
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            
+            $session_genres = get_the_terms(get_the_ID(), 'genre');
+            $genre_classes = array();
+            $genre_names = array();
+            
+            if ($session_genres && !is_wp_error($session_genres)) {
+                foreach ($session_genres as $g) {
+                    $genre_classes[] = $g->slug;
+                    $genre_names[] = $g->name;
+                }
+            }
+            
+            $thumbnail = '';
+            if (has_post_thumbnail()) {
+                $thumbnail = get_the_post_thumbnail(get_the_ID(), 'artist-card', array('class' => 'artist-card__image'));
+            } else {
+                $thumbnail = '<div class="artist-card__placeholder"></div>';
+            }
+            
+            $tags_html = '';
+            foreach (array_slice($genre_names, 0, 2) as $name) {
+                $tags_html .= '<span class="tag">' . esc_html($name) . '</span>';
+            }
+            
+            $html .= sprintf(
+                '<a href="%s" class="artist-card reveal" data-genre="%s">
+                    %s
+                    <div class="artist-card__overlay">
+                        <h3 class="artist-card__name">%s</h3>
+                        <div class="artist-card__tags">%s</div>
+                    </div>
+                </a>',
+                esc_url(get_permalink()),
+                esc_attr(implode(' ', $genre_classes)),
+                $thumbnail,
+                esc_html(get_the_title()),
+                $tags_html
+            );
+        }
+        wp_reset_postdata();
+    }
+    
+    // Calculate max pages for this filter
+    $count_args = array(
+        'post_type'      => 'session',
+        'posts_per_page' => -1,
+        'post_status'    => 'publish',
+        'fields'         => 'ids',
+    );
+    
+    if ($filter !== 'all' && !empty($filter)) {
+        $count_args['tax_query'] = array(
+            array(
+                'taxonomy' => 'genre',
+                'field'    => 'slug',
+                'terms'    => $filter,
+            ),
+        );
+    }
+    
+    $total_query = new WP_Query($count_args);
+    $total_posts = $total_query->found_posts;
+    $max_pages = ceil($total_posts / $per_page);
+    
+    wp_send_json_success(array(
+        'html'       => $html,
+        'max_pages'  => $max_pages,
+        'total'      => $total_posts,
+        'has_more'   => $page < $max_pages,
+    ));
+}
+add_action('wp_ajax_soundroom_load_more', 'soundroom_load_more_sessions');
+add_action('wp_ajax_nopriv_soundroom_load_more', 'soundroom_load_more_sessions');
+
+/**
  * Add body classes
  */
 function soundroom_body_classes($classes) {

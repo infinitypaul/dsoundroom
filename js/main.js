@@ -141,36 +141,128 @@ function initRevealAnimations() {
 }
 
 /**
- * Filter grid for sessions page
+ * Filter grid with infinite scroll for sessions page
  */
 function initFilterGrid() {
   const filterBtns = document.querySelectorAll('.filter-btn');
-  const artistCards = document.querySelectorAll('.artist-card[data-genre]');
+  const artistsGrid = document.getElementById('artistsGrid');
+  const infiniteLoader = document.getElementById('infiniteLoader');
+  const infiniteEnd = document.getElementById('infiniteEnd');
+  const infiniteEmpty = document.getElementById('infiniteEmpty');
   
-  if (!filterBtns.length || !artistCards.length) return;
-
+  if (!filterBtns.length || !artistsGrid) return;
+  
+  let currentPage = 1;
+  let currentFilter = 'all';
+  let maxPages = parseInt(artistsGrid.dataset.maxPages) || 1;
+  let isLoading = false;
+  let hasMore = currentPage < maxPages;
+  
+  // Intersection Observer for infinite scroll
+  const loadMoreObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && hasMore && !isLoading) {
+        loadMoreSessions();
+      }
+    });
+  }, {
+    root: null,
+    rootMargin: '200px',
+    threshold: 0
+  });
+  
+  // Observe the loader element
+  if (infiniteLoader) {
+    loadMoreObserver.observe(infiniteLoader);
+  }
+  
+  // Update status visibility
+  function updateStatus() {
+    const cards = artistsGrid.querySelectorAll('.artist-card');
+    
+    if (infiniteLoader) infiniteLoader.style.display = isLoading ? 'flex' : 'none';
+    if (infiniteEnd) infiniteEnd.style.display = (!isLoading && !hasMore && cards.length > 0) ? 'block' : 'none';
+    if (infiniteEmpty) infiniteEmpty.style.display = (!isLoading && cards.length === 0) ? 'block' : 'none';
+  }
+  
+  // Load more sessions via AJAX
+  function loadMoreSessions() {
+    if (isLoading || !hasMore) return;
+    
+    isLoading = true;
+    currentPage++;
+    updateStatus();
+    
+    const formData = new FormData();
+    formData.append('action', 'soundroom_load_more');
+    formData.append('page', currentPage);
+    formData.append('filter', currentFilter);
+    
+    fetch(window.soundroom?.ajax_url || '/wp-admin/admin-ajax.php', {
+      method: 'POST',
+      body: formData,
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(data => {
+      isLoading = false;
+      
+      if (data.success && data.data.html) {
+        // Create temp container to parse HTML
+        const temp = document.createElement('div');
+        temp.innerHTML = data.data.html;
+        
+        // Add each card with animation
+        const newCards = temp.querySelectorAll('.artist-card');
+        newCards.forEach((card, index) => {
+          card.style.transitionDelay = `${index * 0.1}s`;
+          artistsGrid.appendChild(card);
+          // Trigger reveal animation
+          setTimeout(() => card.classList.add('visible'), 50);
+        });
+        
+        maxPages = data.data.max_pages;
+        hasMore = data.data.has_more;
+      } else {
+        hasMore = false;
+      }
+      
+      updateStatus();
+    })
+    .catch(error => {
+      console.error('Load more failed:', error);
+      isLoading = false;
+      updateStatus();
+    });
+  }
+  
+  // Filter button click handlers
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
+      const newFilter = btn.dataset.filter;
+      
+      // Don't reload if same filter
+      if (newFilter === currentFilter) return;
+      
       // Update active state
       filterBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-
-      const filter = btn.dataset.filter;
-
-      artistCards.forEach(card => {
-        const genres = card.dataset.genre.split(' ');
-        
-        if (filter === 'all' || genres.includes(filter)) {
-          card.style.display = '';
-          // Re-trigger animation
-          card.classList.remove('visible');
-          setTimeout(() => card.classList.add('visible'), 50);
-        } else {
-          card.style.display = 'none';
-        }
-      });
+      
+      // Reset and reload with new filter
+      currentFilter = newFilter;
+      currentPage = 0; // Will be incremented to 1 in loadMoreSessions
+      hasMore = true;
+      
+      // Clear current grid
+      artistsGrid.innerHTML = '';
+      
+      // Load first page with filter
+      loadMoreSessions();
     });
   });
+  
+  // Initial status update
+  updateStatus();
 }
 
 /**

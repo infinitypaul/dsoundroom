@@ -6,6 +6,9 @@
  */
 
 get_header();
+
+// Get total count for infinite scroll
+$total_sessions = wp_count_posts('session')->publish;
 ?>
 
 <!-- Sessions Header -->
@@ -45,15 +48,31 @@ get_header();
         </div>
         
         <!-- Artists Grid -->
-        <div class="artists-grid" id="artistsGrid">
-            <?php if (have_posts()): while (have_posts()): the_post();
-                $session_genres = get_the_terms(get_the_ID(), 'genre');
-                $genre_classes = array();
-                if ($session_genres && !is_wp_error($session_genres)) {
-                    foreach ($session_genres as $g) {
-                        $genre_classes[] = $g->slug;
+        <div class="artists-grid" id="artistsGrid" 
+             data-page="1" 
+             data-max-pages="<?php echo esc_attr(ceil($total_sessions / 9)); ?>"
+             data-filter="all">
+            <?php 
+            // Initial load - get first batch
+            $initial_query = new WP_Query(array(
+                'post_type'      => 'session',
+                'posts_per_page' => 9,
+                'paged'          => 1,
+                'orderby'        => 'date',
+                'order'          => 'DESC',
+            ));
+            
+            if ($initial_query->have_posts()): 
+                while ($initial_query->have_posts()): $initial_query->the_post();
+                    $session_genres = get_the_terms(get_the_ID(), 'genre');
+                    $genre_classes = array();
+                    $genre_names = array();
+                    if ($session_genres && !is_wp_error($session_genres)) {
+                        foreach ($session_genres as $g) {
+                            $genre_classes[] = $g->slug;
+                            $genre_names[] = $g->name;
+                        }
                     }
-                }
             ?>
                 <a href="<?php the_permalink(); ?>" class="artist-card reveal" data-genre="<?php echo esc_attr(implode(' ', $genre_classes)); ?>">
                     <?php if (has_post_thumbnail()): ?>
@@ -64,30 +83,31 @@ get_header();
                     <div class="artist-card__overlay">
                         <h3 class="artist-card__name"><?php the_title(); ?></h3>
                         <div class="artist-card__tags">
-                            <?php
-                            if ($session_genres && !is_wp_error($session_genres)):
-                                foreach (array_slice($session_genres, 0, 2) as $genre):
-                            ?>
-                                <span class="tag"><?php echo esc_html($genre->name); ?></span>
-                            <?php 
-                                endforeach;
-                            endif;
-                            ?>
+                            <?php foreach (array_slice($genre_names, 0, 2) as $name): ?>
+                                <span class="tag"><?php echo esc_html($name); ?></span>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 </a>
-            <?php endwhile; endif; ?>
+            <?php 
+                endwhile; 
+                wp_reset_postdata();
+            endif; 
+            ?>
         </div>
         
-        <!-- Pagination -->
-        <div class="text-center mt-xl reveal">
-            <?php
-            the_posts_pagination(array(
-                'mid_size'  => 2,
-                'prev_text' => '← ' . __('Previous', 'soundroom'),
-                'next_text' => __('Next', 'soundroom') . ' →',
-            ));
-            ?>
+        <!-- Infinite Scroll Loader -->
+        <div class="infinite-scroll-status text-center mt-xl">
+            <div class="infinite-scroll-loader" id="infiniteLoader" style="display: none;">
+                <div class="loader-spinner"></div>
+                <span>Loading more sessions...</span>
+            </div>
+            <div class="infinite-scroll-end" id="infiniteEnd" style="display: none;">
+                <span class="section__eyebrow">You've seen them all</span>
+            </div>
+            <div class="infinite-scroll-empty" id="infiniteEmpty" style="display: none;">
+                <span class="section__eyebrow">No sessions found</span>
+            </div>
         </div>
     </div>
 </section>
